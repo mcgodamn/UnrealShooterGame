@@ -2,6 +2,7 @@
 
 
 #include "PlayerCharacter.h"
+#include "Gun.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -15,7 +16,10 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GunInstance = GetWorld()->SpawnActor<AGun>(GunClass);
+	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+	GunInstance->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	GunInstance->SetOwner(this);
 }
 
 // Called every frame
@@ -35,6 +39,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAction(TEXT("Jump"),EInputEvent::IE_Pressed ,this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Shoot"),EInputEvent::IE_Pressed ,this, &APlayerCharacter::Shoot);
 }
 
 void APlayerCharacter::MoveForward(float AxisValue)
@@ -45,4 +50,9 @@ void APlayerCharacter::MoveForward(float AxisValue)
 void APlayerCharacter::MoveRight(float AxisValue)
 {
 	AddMovementInput(GetActorRightVector() * AxisValue);
+}
+
+void APlayerCharacter::Shoot()
+{
+	GunInstance->PullTrigger();
 }

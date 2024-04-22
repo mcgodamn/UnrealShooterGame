@@ -48,7 +48,7 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 {
 	auto Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	Hp = FMath::Max(Hp - Damage, 0);
-
+	UE_LOG(LogTemp, Display, TEXT("WTF %f %f"), Hp, Damage);
 	return Damage;
 }
 

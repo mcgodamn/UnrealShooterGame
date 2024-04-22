@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/SkeletalMeshComponent.h"
 #include "Gun.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AGun::AGun()
@@ -33,5 +34,16 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(ShootFX, SkeletalMesh, TEXT("MuzzleFlashSocket"));
-}
 
+	FVector Pos;
+	FRotator Rot;
+	Cast<APawn>(GetOwner())->GetController()->GetPlayerViewPoint(Pos, Rot);
+	
+	auto End = Pos + Rot.Vector() * MaxRange;
+	FHitResult HitResult;
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Pos, End, ECollisionChannel::ECC_GameTraceChannel1))
+	{
+		// DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 3, FColor::Red, true);
+		UGameplayStatics::SpawnEmitterAtLocation(this, HitFX, HitResult.ImpactPoint, (-Rot.Vector()).Rotation());
+	}
+}

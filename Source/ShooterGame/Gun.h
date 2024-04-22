@@ -33,4 +33,10 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* ShootFX;
+	
+	UPROPERTY(EditAnywhere)
+	class UParticleSystem* HitFX;
+
+	UPROPERTY(EditAnywhere)
+	float MaxRange = 10000;
 };

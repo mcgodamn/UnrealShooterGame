@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter.h"
 #include "Gun.h"
+#include "Math/UnrealMathUtility.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -20,6 +21,7 @@ void APlayerCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	GunInstance->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	GunInstance->SetOwner(this);
+	Hp = MaxHp;
 }
 
 // Called every frame
@@ -40,6 +42,19 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAction(TEXT("Jump"),EInputEvent::IE_Pressed ,this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"),EInputEvent::IE_Pressed ,this, &APlayerCharacter::Shoot);
+}
+
+float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	auto Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	Hp = FMath::Max(Hp - Damage, 0);
+
+	return Damage;
+}
+
+bool APlayerCharacter::IsDead() const
+{
+	return Hp <= 0;
 }
 
 void APlayerCharacter::MoveForward(float AxisValue)

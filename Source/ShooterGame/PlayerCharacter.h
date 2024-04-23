@@ -46,5 +46,4 @@ private:
 	float Hp;
 	
 	class AGun* GunInstance;
-
 };

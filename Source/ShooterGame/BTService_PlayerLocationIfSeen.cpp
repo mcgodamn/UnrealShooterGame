@@ -14,6 +14,8 @@ UBTService_PlayerLocationIfSeen::UBTService_PlayerLocationIfSeen()
 
 void UBTService_PlayerLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
+    Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
+
     auto player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
     auto Blackboard = OwnerComp.GetBlackboardComponent();
     if (OwnerComp.GetAIOwner()->LineOfSightTo(player))

@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/DamageEvents.h"
+#include "PlayerCharacter.h"
 
 // Sets default values
 AGun::AGun()
@@ -35,6 +36,7 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(ShootFX, SkeletalMesh, TEXT("MuzzleFlashSocket"));
+	UGameplayStatics::SpawnSoundAttached(ShootSound, SkeletalMesh, TEXT("MuzzleFlashSocket"));
 
 	FVector Pos;
 	FRotator Rot;
@@ -52,10 +54,15 @@ void AGun::PullTrigger()
 		auto Dir = -Rot.Vector();
 
 		FPointDamageEvent DamageEvent(Damage, HitResult, Dir, nullptr);
-		if (HitResult.GetActor())
+		if (Cast<APlayerCharacter>(HitResult.GetActor()))
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(this, HitFX, HitResult.ImpactPoint, Dir.Rotation());
 			HitResult.GetActor()->TakeDamage(Damage, DamageEvent, ctrler, this);
+			UGameplayStatics::SpawnSoundAtLocation(this, HitCharSound, HitResult.ImpactPoint);
+		}
+		else
+		{
+			UGameplayStatics::SpawnSoundAtLocation(this, HitEnvSound, HitResult.ImpactPoint);
 		}
 	}
 }

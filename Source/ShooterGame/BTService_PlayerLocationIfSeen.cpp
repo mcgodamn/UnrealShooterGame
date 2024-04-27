@@ -20,7 +20,7 @@ void UBTService_PlayerLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerComp
     auto Blackboard = OwnerComp.GetBlackboardComponent();
     if (OwnerComp.GetAIOwner()->LineOfSightTo(player))
     {
-        Blackboard->SetValueAsVector(GetSelectedBlackboardKey(), player->GetActorLocation());
+        Blackboard->SetValueAsObject(GetSelectedBlackboardKey(), player);
     }
     else
     {

@@ -69,6 +69,11 @@ bool APlayerCharacter::IsDead() const
 	return Hp <= 0;
 }
 
+float APlayerCharacter::GetHPRatio() const
+{
+	return Hp / MaxHp;
+}
+
 void APlayerCharacter::MoveForward(float AxisValue)
 {
 	AddMovementInput(GetActorForwardVector() * AxisValue);

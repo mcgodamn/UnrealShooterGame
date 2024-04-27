@@ -33,9 +33,14 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* ShootFX;
-	
 	UPROPERTY(EditAnywhere)
 	class UParticleSystem* HitFX;
+	UPROPERTY(EditAnywhere)
+	class USoundBase* ShootSound;
+	UPROPERTY(EditAnywhere)
+	class USoundBase* HitEnvSound;
+	UPROPERTY(EditAnywhere)
+	class USoundBase* HitCharSound;
 
 	UPROPERTY(EditAnywhere)
 	float MaxRange = 10000;

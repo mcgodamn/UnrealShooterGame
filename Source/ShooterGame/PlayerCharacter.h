@@ -30,6 +30,8 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
+	UFUNCTION(BlueprintPure)
+	float GetHPRatio() const;
 	
 	void Shoot();
 

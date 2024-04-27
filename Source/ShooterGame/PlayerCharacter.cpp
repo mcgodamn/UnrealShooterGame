@@ -4,6 +4,9 @@
 #include "PlayerCharacter.h"
 #include "Gun.h"
 #include "Math/UnrealMathUtility.h"
+#include "Kismet/GameplayStatics.h"
+#include "ShooterGameModeBase.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -48,7 +51,16 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 {
 	auto Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	Hp = FMath::Max(Hp - Damage, 0);
-	// UE_LOG(LogTemp, Display, TEXT("WTF %f %f"), Hp, Damage);
+	
+	if (IsDead())
+	{
+		auto GameMode = Cast<AShooterGameModeBase>(UGameplayStatics::GetGameMode(this));
+		GameMode->PawnDead(this);
+
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
 	return Damage;
 }
 

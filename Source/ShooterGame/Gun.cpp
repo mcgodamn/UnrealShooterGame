@@ -43,7 +43,10 @@ void AGun::PullTrigger()
 	
 	auto End = Pos + Rot.Vector() * MaxRange;
 	FHitResult HitResult;
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, Pos, End, ECollisionChannel::ECC_GameTraceChannel1))
+	FCollisionQueryParams params;
+	params.AddIgnoredActor(this);
+	params.AddIgnoredActor(GetOwner());
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Pos, End, ECollisionChannel::ECC_GameTraceChannel1, params))
 	{
 		// DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 3, FColor::Red, true);
 		auto Dir = -Rot.Vector();

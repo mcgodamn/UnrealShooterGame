@@ -13,6 +13,9 @@ UBTService_PlayerLocation::UBTService_PlayerLocation()
 
 void UBTService_PlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-    auto player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-    OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), player->GetActorLocation());
+    if (auto player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0))
+    {
+        OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), player->GetActorLocation());
+    }
+
 }

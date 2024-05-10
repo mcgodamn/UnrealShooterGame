@@ -21,7 +21,16 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	GunInstance = GetWorld()->SpawnActor<AGun>(GunClass);
-	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
+
+	FPermissionListOwners boneNames;
+	GetMesh()->GetBoneNames(boneNames);
+	for(auto boneName : boneNames)
+	{
+		GetMesh()->HideBoneByName(boneName, EPhysBodyOp::PBO_None);
+	}
+
+	// GetMesh()->UnHideBoneByName(TEXT("weapon_r"));
+
 	GunInstance->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	GunInstance->SetOwner(this);
 	Hp = MaxHp;

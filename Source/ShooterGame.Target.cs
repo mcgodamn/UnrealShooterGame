@@ -8,8 +8,8 @@ public class ShooterGameTarget : TargetRules
 	public ShooterGameTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V4;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
-		ExtraModuleNames.Add("ShooterGame");
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
+        DefaultBuildSettings = BuildSettingsVersion.V6;
+        ExtraModuleNames.Add("ShooterGame");
 	}
 }
